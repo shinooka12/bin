@@ -1,8 +1,47 @@
 #!/bin/bash
 
+function usage(){
+echo "Usage: pssec [-m]"
+}
 
+while getopts mae option
+do
+case $option in
+
+m)
+echo "名前"
+echo -e "\tgitpush - gitの面倒くさい手順を自動化"
+echo "書式"
+echo -e "\tgitpush [-m]"
+echo "説明"
+echo -e "\t-m"
+echo -e "\t\tgitpushのマニュアルが表示されます。\n"
+echo -e "\t自動化されいる手順は以下の通りです。"
+echo -e "\tgit add -A"
+echo -e "\tgit commit -m (あなたが入力したコメント)"
+echo -e "\tgit push origin master"
+echo -e "\tブランチ名は自分で変更してください。\n"
+exit 1
+;;
+
+\?)
+usage
+exit 1
+;;
+
+esac
+done
+
+process=0
+echo -n "plz comment :"
+read comment
+
+if [ -z $comment ];then
+usage
+exit 1
+fi
 command="git add -A"
-command1="git commit -m gg"
+command1="git commit -m ${comment}"
 command2="git push origin master"
 
 eval $command
