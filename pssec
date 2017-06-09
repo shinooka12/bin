@@ -37,11 +37,18 @@ usage
 exit 1
 fi
 
+if expr "$1" : '[0-9]*' > /dev/null ; then
+
 process=0
 echo -n "what is process? :"
 read process
 
 if [ -z $process ];then
+usage
+exit 1
+fi
+
+else
 usage
 exit 1
 fi
