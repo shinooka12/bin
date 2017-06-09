@@ -1,0 +1,58 @@
+#!/bin/bash
+
+function usage(){
+echo "Usage: pssec [-m] process sec"
+}
+    
+
+while getopts mae option
+do
+case $option in
+
+m)
+echo "名前"
+echo -e "\tpssec - ps aux コマンドを指定した秒単位で出力します"
+echo "書式"
+echo -e "\tpssec [-m]"
+echo "説明"
+echo -e "\t-m"
+echo -e "\t\tpssecのマニュアルが表示されます。\n"
+echo -e "\t第1引数に時間(秒)を指定してください。"
+echo -e "\t特定のプロセスのCPUやメモリの使用率を見るために作成しました。"
+echo -e "\t実行後、監視したいプロセスの名前を入力してください。"
+echo -e "\tps aux | grep (入力したプロセス)と同じ実行結果が得られます。\n"
+exit 1
+;;
+
+\?)
+usage
+exit 1
+;;
+
+esac
+done
+
+if [ $# -ne 1 ];then
+usage
+exit 1
+fi
+
+process=0
+echo -n "what is process? :"
+read process
+
+if [ -z $process ];then
+usage
+exit 1
+fi
+
+command="ps aux | head -1"
+command1="ps aux | grep ${process} | grep -v grep"
+
+eval $command
+while true
+do
+eval $command1
+sleep ${1}s
+done
+	
